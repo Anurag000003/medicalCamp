@@ -1,0 +1,86 @@
+<header class="site-header sticky-top">
+  <div class="top-announcement-bar py-1 text-center text-white small">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span><i class="bi bi-heart-pulse-fill me-1 text-danger"></i> Community Healthcare Access Initiative — Free Consultations & Screenings</span>
+      <span class="d-none d-md-inline"><i class="bi bi-telephone-fill me-1"></i> Helpline: 1-800-MED-CAMP (Mon–Sat 8AM–6PM)</span>
+    </div>
+  </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center fw-bold text-teal" href="/" id="brand-logo">
+        <span class="brand-icon-box me-2 d-flex align-items-center justify-content-center">
+          <i class="bi bi-hospital fs-5 text-white"></i>
+        </span>
+        <div class="d-flex flex-column lh-1">
+          <span class="fs-5 tracking-tight fw-bold text-dark">Medical Camp</span>
+          <span class="brand-subtext text-teal text-uppercase fw-semibold">Registration Portal</span>
+        </div>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-2 my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'home' ? 'active fw-bold text-teal' : '' %>" href="/" id="nav-home">
+              <i class="bi bi-house-door me-1 d-lg-none"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'camps' ? 'active fw-bold text-teal' : '' %>" href="/camps" id="nav-camps">
+              <i class="bi bi-card-checklist me-1 d-lg-none"></i>Medical Camps
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'register' ? 'active fw-bold text-teal' : '' %>" href="/register" id="nav-register">
+              <i class="bi bi-person-plus me-1 d-lg-none"></i>Register Now
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'lookup' ? 'active fw-bold text-teal' : '' %>" href="/registrations/lookup" id="nav-lookup">
+              <i class="bi bi-search me-1 d-lg-none"></i>Find My Pass
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'about' ? 'active fw-bold text-teal' : '' %>" href="/about" id="nav-about">
+              <i class="bi bi-info-circle me-1 d-lg-none"></i>About Us
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= activeNav === 'contact' ? 'active fw-bold text-teal' : '' %>" href="/contact" id="nav-contact">
+              <i class="bi bi-envelope me-1 d-lg-none"></i>Contact
+            </a>
+          </li>
+
+          <!-- Admin Portal Area -->
+          <li class="nav-item ms-lg-2">
+            <% if (currentAdmin) { %>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-teal dropdown-toggle d-flex align-items-center gap-1 px-3 py-1" type="button" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-shield-check text-success"></i>
+                  <span><%= ((currentAdmin.name || currentAdmin.fullName || 'Admin')).split(' ')[0] %> (Admin)</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="adminDropdown">
+                  <li><h6 class="dropdown-header">Administrative Controls</h6></li>
+                  <li><a class="dropdown-item" href="/admin/dashboard"><i class="bi bi-speedometer2 me-2 text-teal"></i>Dashboard</a></li>
+                  <li><a class="dropdown-item" href="/admin/camps"><i class="bi bi-hospital me-2 text-primary"></i>Manage Camps</a></li>
+                  <li><a class="dropdown-item" href="/admin/camps/new"><i class="bi bi-plus-circle me-2 text-success"></i>Create New Camp</a></li>
+                  <li><a class="dropdown-item" href="/admin/registrations"><i class="bi bi-people me-2 text-info"></i>Registrations</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="/admin/logout"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+                </ul>
+              </div>
+            <% } else { %>
+              <a class="btn btn-sm btn-outline-secondary px-3 py-1 d-flex align-items-center gap-1" href="/admin/login" id="nav-admin-login">
+                <i class="bi bi-shield-lock"></i>
+                <span>Admin Login</span>
+              </a>
+            <% } %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
