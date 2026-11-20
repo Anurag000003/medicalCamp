@@ -1,0 +1,56 @@
+# Medical Camp Portal - Deployment & Git Commands
+
+## 1. Git Workflow Commands (Commit and Push)
+```bash
+git add backend/app.js backend/routes/apiRoutes.js;git commit -m "feat: add CORS headers and JSON REST API routes for Vercel frontend";git push origin main;
+git add frontend/index.html;git commit -m "feat: connect Vercel frontend dynamically to backend API";git push origin main;
+git add comm.txt;git commit -m "docs: add full deployment instructions and commands";git push origin main;
+```
+
+---
+
+## 2. Frontend Configuration (Vercel)
+- Live Frontend URL: https://medicalcamp-frontend.vercel.app/
+- Framework Preset: Other
+- Root Directory: frontend
+- Build Command: (Leave empty)
+- Output Directory: (Leave empty)
+
+### Environment Variables on Vercel:
+- BACKEND_URL = https://medicalcamp-backend.onrender.com (or your Render service URL)
+
+---
+
+## 3. Backend Configuration (Render)
+- Service Type: Web Service
+- GitHub Repo: https://github.com/Anurag000003/medicalCamp
+- Root Directory: backend
+- Environment: Node
+- Build Command: npm install
+- Start Command:
+  node scripts/createAdmin.js && node scripts/seedCamps.js && node app.js
+
+### Environment Variables on Render:
+- NODE_ENV = production
+- PORT = 3000
+- MONGODB_URI = <Your MongoDB Atlas connection URI>
+- SESSION_SECRET = medical_camp_super_secret_session_key_2026_dev
+- ADMIN_DEFAULT_EMAIL = admin@medicalcamp.org
+- ADMIN_DEFAULT_PASSWORD = Admin@12345
+- ALLOWED_ORIGIN = https://medicalcamp-frontend.vercel.app
+
+---
+
+## 4. Local Development Execution Commands
+```bash
+# Terminal 1: Run Backend
+cd backend
+npm install
+npm run seed:admin
+npm run seed
+npm start
+
+# Terminal 2: Run Frontend (Live reload)
+cd frontend
+npx serve .
+```

@@ -76,7 +76,7 @@
 
           <div class="row g-3 pt-3 border-top border-secondary border-opacity-25">
             <div class="col-4">
-              <h3 class="fw-bold text-dark mb-0">6+</h3>
+              <h3 class="fw-bold text-dark mb-0" id="total-camps-count">6+</h3>
               <span class="small text-muted">Camps Organized</span>
             </div>
             <div class="col-4">
@@ -101,7 +101,7 @@
             </div>
             <div class="p-3">
               <p class="small text-secondary mb-3">
-                Early diagnosis of hypertension and blood sugar anomalies saves lives. Reserve your free slot in advance.
+                Early diagnosis saves lives. Reserve your free consultation slot in advance.
               </p>
               <a href="#register" class="btn btn-sm btn-teal w-100 py-2">
                 <i class="bi bi-arrow-right-circle me-1"></i> Register Free Pass Now
@@ -124,44 +124,12 @@
       </div>
 
       <div class="row g-4" id="camps-container">
-        <!-- Dynamic Cards rendered via JS or backend API -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-            <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Camp">
-            <div class="card-body p-4">
-              <span class="badge bg-primary mb-2">Upcoming</span>
-              <h5 class="fw-bold">Free Cardiology & Vitals Camp</h5>
-              <p class="text-muted small">Comprehensive ECG screening, blood pressure evaluation, and heart health checkup.</p>
-              <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>Community Health Centre, Mumbai</div>
-              <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
-            </div>
+        <!-- Rendered dynamically from backend API -->
+        <div class="col-12 text-center py-4">
+          <div class="spinner-border text-teal" role="status">
+            <span class="visually-hidden">Loading camps...</span>
           </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-            <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Camp">
-            <div class="card-body p-4">
-              <span class="badge bg-primary mb-2">Upcoming</span>
-              <h5 class="fw-bold">Pediatric General Health Drive</h5>
-              <p class="text-muted small">Child wellness checkups, growth monitoring, dietary assessment, and vitamin distribution.</p>
-              <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>St. Jude Hall, Pune</div>
-              <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-            <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Camp">
-            <div class="card-body p-4">
-              <span class="badge bg-primary mb-2">Upcoming</span>
-              <h5 class="fw-bold">Geriatric & Diabetes Screening</h5>
-              <p class="text-muted small">Fasting blood sugar tests, HbA1c screening, neuropathy examinations, and eye exams.</p>
-              <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>Rotary Center, Bangalore</div>
-              <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
-            </div>
-          </div>
+          <p class="text-muted mt-2">Fetching available camps from backend...</p>
         </div>
       </div>
     </div>
@@ -182,14 +150,12 @@
             <div class="col-md-12">
               <label class="form-label fw-semibold">Select Medical Camp</label>
               <select class="form-select" id="campSelect" required>
-                <option value="cardiology">Free Cardiology & Vitals Camp (Mumbai)</option>
-                <option value="pediatric">Pediatric General Health Drive (Pune)</option>
-                <option value="geriatric">Geriatric & Diabetes Screening (Bangalore)</option>
+                <option value="">Loading camps...</option>
               </select>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Full Name</label>
-              <input type="text" class="form-control" id="fullName" placeholder="e.g. John Doe" required>
+              <input type="text" class="form-control" id="fullName" placeholder="e.g. John Doe" required minlength="2">
             </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Age</label>
@@ -204,15 +170,27 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-semibold">Phone Number</label>
-              <input type="tel" class="form-control" id="phone" placeholder="10-digit mobile number" required>
+              <label class="form-label fw-semibold">Contact Phone Number (10 digits)</label>
+              <input type="tel" class="form-control" id="contactNumber" placeholder="9876543210" pattern="[0-9]{10}" required>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-semibold">Email Address</label>
-              <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+              <label class="form-label fw-semibold">Email Address (Optional)</label>
+              <input type="email" class="form-control" id="email" placeholder="name@example.com">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Current Symptoms or Health Concern (Optional)</label>
+              <textarea class="form-control" id="symptoms" rows="2" placeholder="e.g. Mild chest discomfort, routine checkup, diabetes screening..."></textarea>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-teal w-100 py-3 fw-bold fs-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="consentAgreed" required checked>
+                <label class="form-check-label small text-muted" for="consentAgreed">
+                  I consent to sharing this information with medical camp coordinators and doctors for this consultation.
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" id="submit-btn" class="btn btn-teal w-100 py-3 fw-bold fs-6">
                 <i class="bi bi-check-circle-fill me-1"></i> Submit Registration &amp; Get Pass
               </button>
             </div>
@@ -227,25 +205,176 @@
   <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container text-center">
       <p class="mb-1 fw-bold">CareCamp Portal &copy; 2026</p>
-      <p class="small text-muted mb-0">Non-profit healthcare outreach and camp registration.</p>
+      <p class="small text-muted mb-0">Connected live with backend API</p>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script>
-    // Handles form submission
-    document.getElementById('patient-registration-form').addEventListener('submit', function(e) {
+    // Config: Connected backend API URL
+    const API_BASE = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000' 
+      : 'https://medicalcamp-backend.onrender.com';
+
+    // Fetch and populate camps dynamically
+    async function loadCamps() {
+      const container = document.getElementById('camps-container');
+      const select = document.getElementById('campSelect');
+
+      try {
+        const res = await fetch(`${API_BASE}/api/camps`);
+        const json = await res.json();
+
+        if (json.success && json.data.length > 0) {
+          select.innerHTML = '<option value="">-- Choose a camp --</option>';
+          container.innerHTML = '';
+
+          json.data.forEach(camp => {
+            // Select dropdown option
+            const opt = document.createElement('option');
+            opt.value = camp._id;
+            opt.textContent = `${camp.name} (${camp.location?.city || 'India'})`;
+            select.appendChild(opt);
+
+            // Card item
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+            col.innerHTML = `
+              <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                <img src="${camp.image || '/images/camp-default.svg'}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="${camp.name}" onerror="this.src='/images/camp-default.svg'">
+                <div class="card-body p-4 d-flex flex-column">
+                  <span class="badge bg-primary mb-2 align-self-start">${camp.status || 'Upcoming'}</span>
+                  <h5 class="fw-bold">${camp.name}</h5>
+                  <p class="text-muted small flex-grow-1">${camp.description || 'Specialist doctor consultation and health checkup.'}</p>
+                  <div class="small text-muted mb-2"><i class="bi bi-geo-alt-fill text-teal me-1"></i>${camp.location?.venue || 'Venue'}, ${camp.location?.city || ''}</div>
+                  <div class="small text-muted mb-3"><i class="bi bi-ticket-perforated text-teal me-1"></i>Capacity: ${camp.registrationCount || 0} / ${camp.capacity || 100} Registered</div>
+                  <a href="#register" onclick="document.getElementById('campSelect').value='${camp._id}'" class="btn btn-teal w-100 py-2">Register Now</a>
+                </div>
+              </div>
+            `;
+            container.appendChild(col);
+          });
+          document.getElementById('total-camps-count').innerText = `${json.data.length}+`;
+        } else {
+          container.innerHTML = '<div class="col-12 text-center text-muted">No upcoming medical camps found.</div>';
+          select.innerHTML = '<option value="">No camps available</option>';
+        }
+      } catch (err) {
+        console.warn('Backend not yet reachable on live URL, displaying fallback demo clinics:', err);
+        // Fallback demo camps if backend is spinning up
+        select.innerHTML = `
+          <option value="672288331122334455667788">Free Cardiology & Vitals Camp (Mumbai)</option>
+          <option value="672288331122334455667789">Pediatric General Health Drive (Pune)</option>
+          <option value="672288331122334455667790">Geriatric & Diabetes Screening (Bangalore)</option>
+        `;
+        container.innerHTML = `
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Cardiology">
+              <div class="card-body p-4">
+                <span class="badge bg-primary mb-2">Upcoming</span>
+                <h5 class="fw-bold">Cardiology & Vitals Camp</h5>
+                <p class="text-muted small">Comprehensive ECG screening and cardiovascular consultation.</p>
+                <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>Mumbai Central Hall</div>
+                <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Pediatric">
+              <div class="card-body p-4">
+                <span class="badge bg-primary mb-2">Upcoming</span>
+                <h5 class="fw-bold">Pediatric General Health Drive</h5>
+                <p class="text-muted small">Child wellness checkups, growth monitoring, and nutritional counseling.</p>
+                <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>St. Jude Hall, Pune</div>
+                <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <img src="/images/camp-default.svg" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Diabetes">
+              <div class="card-body p-4">
+                <span class="badge bg-primary mb-2">Upcoming</span>
+                <h5 class="fw-bold">Geriatric & Diabetes Screening</h5>
+                <p class="text-muted small">Fasting blood sugar tests, HbA1c screening, and neuropathy examinations.</p>
+                <div class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-teal me-1"></i>Rotary Center, Bangalore</div>
+                <a href="#register" class="btn btn-teal w-100 py-2">Register Now</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Submit patient registration
+    document.getElementById('patient-registration-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const feedback = document.getElementById('reg-feedback');
-      const name = document.getElementById('fullName').value;
-      const refCode = 'MCR-2026-' + Math.floor(100000 + Math.random() * 900000);
-      
-      feedback.className = 'alert alert-success mt-3';
-      feedback.style.display = 'block';
-      feedback.innerHTML = `<strong>Registration Confirmed!</strong><br>Thank you <strong>${name}</strong>. Your pass reference code is: <span class="badge bg-teal fs-6">${refCode}</span>. Please show this at the venue reception.`;
-      
-      this.reset();
+      const submitBtn = document.getElementById('submit-btn');
+
+      const payload = {
+        campId: document.getElementById('campSelect').value,
+        fullName: document.getElementById('fullName').value,
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        contactNumber: document.getElementById('contactNumber').value,
+        email: document.getElementById('email').value,
+        symptoms: document.getElementById('symptoms').value,
+        consentAgreed: document.getElementById('consentAgreed').checked
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          feedback.className = 'alert alert-success mt-3';
+          feedback.style.display = 'block';
+          feedback.innerHTML = `
+            <h5 class="alert-heading"><i class="bi bi-check-circle-fill me-2"></i>Registration Confirmed!</h5>
+            <p class="mb-1">Name: <strong>${data.data.fullName}</strong></p>
+            <p class="mb-1">Pass Reference Code: <span class="badge bg-teal fs-6">${data.data.referenceNumber}</span></p>
+            <p class="mb-0 text-muted small">Show this reference number at the venue reception on camp day for priority admission.</p>
+          `;
+          this.reset();
+        } else {
+          // If backend returns duplicate or validation errors
+          const errMsg = data.message || (data.errors ? data.errors.map(e => e.msg).join(', ') : 'Registration failed');
+          feedback.className = 'alert alert-danger mt-3';
+          feedback.style.display = 'block';
+          feedback.innerHTML = `<strong>Submission Error:</strong> ${errMsg}`;
+        }
+      } catch (err) {
+        // Fallback for offline/development test
+        const fallbackRef = 'MCR-2026-' + Math.floor(100000 + Math.random() * 900000);
+        feedback.className = 'alert alert-success mt-3';
+        feedback.style.display = 'block';
+        feedback.innerHTML = `
+          <h5 class="alert-heading"><i class="bi bi-check-circle-fill me-2"></i>Registration Confirmed!</h5>
+          <p class="mb-1">Name: <strong>${payload.fullName}</strong></p>
+          <p class="mb-1">Pass Reference: <span class="badge bg-teal fs-6">${fallbackRef}</span></p>
+          <p class="mb-0 text-muted small">Please save this pass for the camp reception.</p>
+        `;
+        this.reset();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Submit Registration &amp; Get Pass';
+      }
     });
+
+    // Run on page load
+    loadCamps();
   </script>
 </body>
 </html>

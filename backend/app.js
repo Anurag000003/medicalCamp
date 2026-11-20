@@ -12,9 +12,31 @@ const connectDB = require('./config/database');
 const campRoutes = require('./routes/campRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 const { notFoundHandler, globalErrorHandler } = require('./middleware/errorHandler');
 
 const app = express();
+
+// Enable CORS for Vercel Frontend and Local Development
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'https://medicalcamp-frontend.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080'
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin) || !origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // Set View Engine with ejs-mate for layout boilerplate
 app.engine('ejs', ejsMate);
@@ -75,6 +97,7 @@ app.use((req, res, next) => {
 });
 
 // Route Handlers
+app.use('/api', apiRoutes);
 app.use('/', campRoutes);
 app.use('/', registrationRoutes);
 app.use('/admin', adminRoutes);
