@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: medicalcamp-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node scripts/createAdmin.js && node scripts/seedCamps.js && node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: ADMIN_DEFAULT_EMAIL
+        value: admin@medicalcamp.org
+      - key: ADMIN_DEFAULT_PASSWORD
+        value: Admin@12345
