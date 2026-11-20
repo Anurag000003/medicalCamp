@@ -1,0 +1,106 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-5 bg-white border-bottom">
+  <div class="container text-center max-w-700 mx-auto" style="max-width: 700px;">
+    <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Get In Touch</span>
+    <h1 class="display-5 fw-bold text-dark tracking-tight mb-3">Contact Medical Outreach Support</h1>
+    <p class="lead text-secondary mb-0">
+      Have questions about an upcoming medical camp, need registration assistance, or want to sponsor a community health camp in your town? Reach out to our team.
+    </p>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Contact Form -->
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+          <h3 class="fw-bold text-dark mb-4">Send Us a Message</h3>
+          
+          <form action="/contact" method="POST">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="contactName" class="form-label">Your Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="contactName" name="name" placeholder="John Doe" required>
+              </div>
+              <div class="col-md-6">
+                <label for="contactEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="contactEmail" name="email" placeholder="john@example.com" required>
+              </div>
+              <div class="col-12">
+                <label for="contactSubject" class="form-label">Subject <span class="text-danger">*</span></label>
+                <select class="form-select" id="contactSubject" name="subject" required>
+                  <option value="" selected disabled>Select inquiry topic...</option>
+                  <option value="Registration Inquiry">Registration Help / Pass Query</option>
+                  <option value="Camp Logistics">Venue Directions &amp; Timing</option>
+                  <option value="Hospital Partnership">Hospital / Doctor Volunteering</option>
+                  <option value="Corporate Sponsorship">Sponsorship &amp; Community Outreach</option>
+                  <option value="General Question">General Feedback / Other</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="contactMessage" class="form-label">Message Details <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="contactMessage" name="message" rows="5" placeholder="How can our healthcare outreach team assist you?" required></textarea>
+              </div>
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-teal btn-lg px-4 w-100 py-2">
+                  <i class="bi bi-send-fill me-2"></i> Submit Inquiry
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Outreach Info & Helplines -->
+      <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+          <h4 class="fw-bold text-dark mb-4">Outreach Helpdesk</h4>
+          
+          <div class="d-flex align-items-start mb-4">
+            <div class="feature-icon-circle bg-teal text-white me-3 flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.15rem;">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+              <h6 class="fw-bold mb-1">Toll-Free Helpline</h6>
+              <p class="text-secondary small mb-1">1-800-MED-CAMP (1-800-633-2267)</p>
+              <span class="badge bg-light text-muted border">Mon – Sat, 8:00 AM – 6:00 PM CST</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start mb-4">
+            <div class="feature-icon-circle bg-primary text-white me-3 flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.15rem;">
+              <i class="bi bi-envelope-at-fill"></i>
+            </div>
+            <div>
+              <h6 class="fw-bold mb-1">Email Support</h6>
+              <p class="text-secondary small mb-1">support@medicalcampportal.org</p>
+              <span class="text-muted small">Typical response within 4 hours</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start mb-4">
+            <div class="feature-icon-circle bg-success text-white me-3 flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.15rem;">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <h6 class="fw-bold mb-1">Central Coordination Office</h6>
+              <p class="text-secondary small mb-0">500 Healthcare Boulevard, Suite 300<br>Springfield, Illinois 62701</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning border-0 shadow-sm p-4 rounded-4">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-exclamation-octagon-fill fs-4 text-warning me-2"></i>
+            <h6 class="fw-bold text-dark mb-0">Immediate Medical Emergency?</h6>
+          </div>
+          <p class="small text-secondary mb-0">
+            Community medical camps provide outpatient preventive screening and cannot handle urgent life-threatening crises. Please immediately call <strong>911</strong> or visit the nearest hospital emergency room.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
