@@ -1,0 +1,198 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb small mb-1">
+            <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-teal text-decoration-none">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Registrations</li>
+          </ol>
+        </nav>
+        <h1 class="h3 fw-bold text-dark mb-0">Participant Registrations</h1>
+        <p class="text-secondary small mb-0">Monitor patient signups, verify admission passes, and manage cancellations.</p>
+      </div>
+
+      <div class="small text-muted">
+        Total Recorded: <strong class="text-teal"><%= pagination.totalCount %></strong> registrations
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+
+    <!-- Search & Filter Controls -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
+      <form action="/admin/registrations" method="GET" class="row g-2 align-items-center">
+        <!-- Search -->
+        <div class="col-lg-4 col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" name="search" value="<%= searchQuery %>" placeholder="Name, Reference, Phone, Email...">
+          </div>
+        </div>
+
+        <!-- Filter by Camp -->
+        <div class="col-lg-3 col-md-6">
+          <select class="form-select" name="campId">
+            <option value="all" <%= selectedCampId === 'all' ? 'selected' : '' %>>All Medical Camps</option>
+            <% allCamps.forEach(camp => { %>
+              <option value="<%= camp._id %>" <%= selectedCampId === camp._id.toString() ? 'selected' : '' %>><%= camp.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Filter by Status -->
+        <div class="col-lg-3 col-md-6">
+          <select class="form-select" name="status">
+            <option value="all" <%= selectedStatus === 'all' ? 'selected' : '' %>>All Statuses</option>
+            <option value="Confirmed" <%= selectedStatus === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+            <option value="Attended" <%= selectedStatus === 'Attended' ? 'selected' : '' %>>Attended</option>
+            <option value="Cancelled" <%= selectedStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+          </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-lg-2 col-md-6 d-flex gap-2">
+          <button type="submit" class="btn btn-teal flex-grow-1">Filter</button>
+          <a href="/admin/registrations" class="btn btn-outline-secondary">Reset</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Registrations Table -->
+    <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden mb-4">
+      <div class="table-responsive">
+        <table class="table admin-table mb-0">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Participant</th>
+              <th>Contact Details</th>
+              <th>Medical Camp</th>
+              <th>Status</th>
+              <th>Registered At</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (registrations && registrations.length > 0) { %>
+              <% registrations.forEach(reg => { %>
+                <tr>
+                  <td>
+                    <a href="/registrations/confirmation/<%= reg.registrationReference %>" target="_blank" class="fw-bold text-teal text-decoration-none">
+                      <%= reg.registrationReference %>
+                    </a>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark"><%= reg.fullName %></div>
+                    <div class="small text-muted"><%= reg.age %>y &bull; <%= reg.gender %></div>
+                  </td>
+                  <td>
+                    <div class="small text-dark"><i class="bi bi-telephone me-1 text-teal"></i><%= reg.contactNumber %></div>
+                    <div class="small text-muted"><i class="bi bi-envelope me-1 text-teal"></i><%= reg.email %></div>
+                    <div class="small text-muted text-truncate" style="max-width: 180px;"><%= reg.address %></div>
+                  </td>
+                  <td>
+                    <div class="small fw-semibold text-dark text-truncate" style="max-width: 220px;" title="<%= reg.campId ? reg.campId.name : '' %>">
+                      <%= reg.campId ? reg.campId.name : 'Unknown Camp' %>
+                    </div>
+                    <div class="small text-muted">
+                      <%= reg.campId ? reg.campId.location.city : '' %>
+                    </div>
+                  </td>
+                  <td>
+                    <% if (reg.registrationStatus === 'Confirmed') { %>
+                      <span class="badge bg-success-subtle text-success border border-success-subtle">Confirmed</span>
+                    <% } else if (reg.registrationStatus === 'Attended') { %>
+                      <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Attended</span>
+                    <% } else { %>
+                      <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Cancelled</span>
+                      <% if (reg.cancellationReason) { %>
+                        <div class="small text-muted" style="font-size: 0.75rem;" title="<%= reg.cancellationReason %>">
+                          <%= reg.cancellationReason %>
+                        </div>
+                      <% } %>
+                    <% } %>
+                  </td>
+                  <td class="small text-muted">
+                    <%= new Date(reg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm">
+                      <a href="/registrations/confirmation/<%= reg.registrationReference %>" target="_blank" class="btn btn-outline-secondary" title="View Pass">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                      
+                      <% if (reg.registrationStatus === 'Confirmed') { %>
+                        <!-- Mark Attended Form -->
+                        <form action="/admin/registrations/<%= reg._id %>/status" method="POST" class="d-inline">
+                          <input type="hidden" name="status" value="Attended">
+                          <button type="submit" class="btn btn-outline-success" title="Mark Attended at Camp">
+                            <i class="bi bi-check2"></i>
+                          </button>
+                        </form>
+
+                        <!-- Cancel Registration Form -->
+                        <form action="/admin/registrations/<%= reg._id %>/cancel" method="POST" class="d-inline cancel-reg-form" data-ref="<%= reg.registrationReference %>">
+                          <input type="hidden" name="reason" value="Cancelled by Administrator">
+                          <button type="submit" class="btn btn-outline-danger" title="Cancel Registration & Release Seat">
+                            <i class="bi bi-x-circle"></i>
+                          </button>
+                        </form>
+                      <% } else if (reg.registrationStatus === 'Attended') { %>
+                        <button class="btn btn-light btn-sm text-muted" disabled title="Already Attended">
+                          <i class="bi bi-check2-all text-primary"></i>
+                        </button>
+                      <% } else { %>
+                        <span class="small text-muted fst-italic">Cancelled</span>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-5 text-muted">
+                  <i class="bi bi-people fs-3 d-block mb-2 text-secondary"></i>
+                  No participant registrations found.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <% if (pagination.totalPages > 1) { %>
+      <nav aria-label="Registrations pagination" class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="small text-muted">
+          Showing page <%= pagination.currentPage %> of <%= pagination.totalPages %>
+        </div>
+
+        <ul class="pagination pagination-sm mb-0">
+          <!-- Previous -->
+          <li class="page-item <%= pagination.currentPage <= 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="/admin/registrations?page=<%= pagination.currentPage - 1 %>&search=<%= searchQuery %>&campId=<%= selectedCampId %>&status=<%= selectedStatus %>">Previous</a>
+          </li>
+
+          <% for (let p = 1; p <= pagination.totalPages; p++) { %>
+            <li class="page-item <%= pagination.currentPage === p ? 'active' : '' %>">
+              <a class="page-link <%= pagination.currentPage === p ? 'bg-teal border-teal text-white' : '' %>" href="/admin/registrations?page=<%= p %>&search=<%= searchQuery %>&campId=<%= selectedCampId %>&status=<%= selectedStatus %>"><%= p %></a>
+            </li>
+          <% } %>
+
+          <!-- Next -->
+          <li class="page-item <%= pagination.currentPage >= pagination.totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="/admin/registrations?page=<%= pagination.currentPage + 1 %>&search=<%= searchQuery %>&campId=<%= selectedCampId %>&status=<%= selectedStatus %>">Next</a>
+          </li>
+        </ul>
+      </nav>
+    <% } %>
+
+  </div>
+</div>

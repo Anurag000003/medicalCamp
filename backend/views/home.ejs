@@ -1,0 +1,310 @@
+<% layout('layouts/boilerplate') -%>
+
+<!-- Hero Section -->
+<section class="hero-section py-5 py-lg-6">
+  <div class="container py-3">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <div class="hero-pill-badge mb-3">
+          <i class="bi bi-shield-check text-teal"></i>
+          <span>Verified Non-Profit Healthcare Outreach Initiative</span>
+        </div>
+        <h1 class="display-4 fw-extrabold text-dark tracking-tight mb-3">
+          Free Community <span class="text-teal">Medical Camps</span> &amp; Specialist Care
+        </h1>
+        <p class="lead text-secondary mb-4">
+          Empowering families with accessible, compassionate healthcare. Discover upcoming community medical clinics, receive free diagnostic screenings, and consult board-certified physicians in your neighborhood.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          <a href="/camps" class="btn btn-teal btn-lg px-4 py-2 d-flex align-items-center gap-2" id="hero-btn-discover">
+            <i class="bi bi-calendar-check"></i>
+            <span>Browse Medical Camps</span>
+          </a>
+          <a href="/register" class="btn btn-outline-teal btn-lg px-4 py-2 d-flex align-items-center gap-2" id="hero-btn-register">
+            <i class="bi bi-person-plus"></i>
+            <span>Register as Participant</span>
+          </a>
+          <a href="/registrations/lookup" class="btn btn-outline-secondary btn-lg px-3 py-2 d-flex align-items-center gap-2">
+            <i class="bi bi-ticket-perforated"></i>
+            <span>Find Pass</span>
+          </a>
+        </div>
+
+        <!-- Trust Metric Counters -->
+        <div class="row g-3 pt-3 border-top border-secondary border-opacity-25">
+          <div class="col-4">
+            <h3 class="fw-bold text-dark mb-0"><%= stats.totalCamps %>+</h3>
+            <span class="small text-muted">Camps Organized</span>
+          </div>
+          <div class="col-4">
+            <h3 class="fw-bold text-dark mb-0"><%= stats.totalRegistrations %>+</h3>
+            <span class="small text-muted">Patients Served</span>
+          </div>
+          <div class="col-4">
+            <h3 class="fw-bold text-teal mb-0">100% Free</h3>
+            <span class="small text-muted">Zero Patient Cost</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="col-lg-5">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white p-3">
+          <div class="position-relative rounded-3 overflow-hidden" style="height: 260px;">
+            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80" alt="Doctor consulting patient" class="w-100 h-100 object-fit-cover" onerror="this.src='/images/camp-default.svg'">
+            <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient bg-dark text-white bg-opacity-75">
+              <span class="badge bg-teal mb-1">Upcoming Clinic</span>
+              <h6 class="mb-0 fw-bold">Next Camp: Cardiology &amp; Vitals Assessment</h6>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="text-muted small"><i class="bi bi-clock me-1 text-teal"></i> 08:30 AM – 03:30 PM</span>
+              <span class="badge bg-success-subtle text-success border border-success-subtle">Registration Active</span>
+            </div>
+            <p class="small text-secondary mb-3">
+              Early diagnosis of hypertension, blood sugar anomalies, and heart arrhythmias saves lives. Reserve your free slot in advance.
+            </p>
+            <a href="/register" class="btn btn-sm btn-teal w-100 py-2">
+              <i class="bi bi-arrow-right-circle me-1"></i> Register Free Pass Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Purpose & Mission Overview Section -->
+<section class="py-5 bg-white border-bottom">
+  <div class="container">
+    <div class="text-center max-w-700 mx-auto mb-5" style="max-width: 760px;">
+      <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Our Healthcare Purpose</span>
+      <h2 class="fw-bold text-dark tracking-tight">Why Community Medical Camps Matter</h2>
+      <p class="text-secondary">
+        Medical camps bridge the gap between quality tertiary healthcare and underserved communities. By bringing qualified hospital doctors and diagnostic labs directly to community centers, we identify chronic conditions before they become critical.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon-circle bg-teal text-white">
+            <i class="bi bi-heart-pulse"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Early Disease Detection</h5>
+          <p class="text-secondary small mb-0">
+            Many conditions like hypertension, pre-diabetes, and cataracts remain asymptomatic until severe. Timely camp screenings enable prompt medical interventions.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon-circle bg-primary text-white">
+            <i class="bi bi-person-badge"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Board-Certified Specialists</h5>
+          <p class="text-secondary small mb-0">
+            Patients consult experienced cardiologists, pediatricians, ophthalmologists, and gynecologists without hospital wait times or consultation fees.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon-circle bg-success text-white">
+            <i class="bi bi-capsule"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Free Diagnostic Tests &amp; Meds</h5>
+          <p class="text-secondary small mb-0">
+            Complimentary point-of-care diagnostics including ECGs, blood glucose checks, eye refractions, and essential starter medications are distributed on-site.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Upcoming Camps Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+      <div>
+        <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Upcoming Clinics</span>
+        <h2 class="fw-bold text-dark mb-0">Featured Medical Camps</h2>
+        <p class="text-secondary small mb-0">Select a camp below to view full details or reserve your registration pass.</p>
+      </div>
+      <a href="/camps" class="btn btn-outline-teal d-flex align-items-center gap-1">
+        <span>View All Camps</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="row g-4">
+      <% if (upcomingCamps && upcomingCamps.length > 0) { %>
+        <% upcomingCamps.forEach(camp => { %>
+          <div class="col-lg-4 col-md-6">
+            <div class="camp-card">
+              <div class="camp-card-img-wrapper">
+                <img src="<%= camp.image || '/images/camp-default.svg' %>" alt="<%= camp.name %>" class="camp-card-img" onerror="this.src='/images/camp-default.svg'">
+                
+                <!-- Status Badge -->
+                <% if (camp.status === 'Upcoming') { %>
+                  <span class="camp-status-badge bg-primary text-white">Upcoming</span>
+                <% } else if (camp.status === 'Ongoing') { %>
+                  <span class="camp-status-badge bg-success text-white">Today</span>
+                <% } else { %>
+                  <span class="camp-status-badge bg-secondary text-white"><%= camp.status %></span>
+                <% } %>
+
+                <!-- Capacity Badge -->
+                <span class="camp-capacity-badge">
+                  <i class="bi bi-people me-1"></i>
+                  <%= camp.remainingCapacity %> / <%= camp.capacity %> Left
+                </span>
+              </div>
+
+              <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
+                  <span><i class="bi bi-calendar-event text-teal me-1"></i><%= camp.formattedDate %></span>
+                  <span>&bull;</span>
+                  <span><i class="bi bi-clock text-teal me-1"></i><%= camp.startTime %></span>
+                </div>
+
+                <h5 class="card-title fw-bold text-dark mb-2 line-clamp-2">
+                  <a href="/camps/<%= camp._id %>" class="text-decoration-none text-dark hover-teal"><%= camp.name %></a>
+                </h5>
+
+                <p class="card-text text-secondary small mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  <%= camp.description %>
+                </p>
+
+                <div class="mb-3">
+                  <div class="small text-muted mb-1"><i class="bi bi-geo-alt-fill text-teal me-1"></i><%= camp.location.venue %>, <%= camp.location.city %></div>
+                  <div class="small text-muted"><i class="bi bi-hospital me-1 text-teal"></i><%= camp.organizer.hospital || camp.organizer.name %></div>
+                </div>
+
+                <!-- Specialties tags -->
+                <div class="d-flex flex-wrap gap-1 mb-4">
+                  <% camp.specialties.slice(0, 3).forEach(sp => { %>
+                    <span class="badge bg-light text-dark border"><%= sp %></span>
+                  <% }) %>
+                  <% if (camp.specialties.length > 3) { %>
+                    <span class="badge bg-light text-muted border">+<%= camp.specialties.length - 3 %></span>
+                  <% } %>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 pt-2 border-top">
+                  <a href="/camps/<%= camp._id %>" class="btn btn-outline-secondary btn-sm flex-grow-1 py-2">
+                    <i class="bi bi-info-circle me-1"></i> Details
+                  </a>
+                  <% if (camp.isOpen) { %>
+                    <a href="/register?campId=<%= camp._id %>" class="btn btn-teal btn-sm flex-grow-1 py-2">
+                      <i class="bi bi-pencil-square me-1"></i> Register
+                    </a>
+                  <% } else { %>
+                    <button class="btn btn-secondary btn-sm flex-grow-1 py-2" disabled>
+                      <%= camp.isFull ? 'Camp Full' : 'Closed' %>
+                    </button>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12">
+          <div class="alert alert-info text-center py-4">
+            <i class="bi bi-info-circle fs-3 d-block mb-2 text-primary"></i>
+            <h5>No Upcoming Camps Scheduled</h5>
+            <p class="mb-0">Please check back soon or browse our full archives.</p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- How Registration Works Section -->
+<section class="py-5 bg-white border-top border-bottom">
+  <div class="container">
+    <div class="text-center max-w-700 mx-auto mb-5" style="max-width: 760px;">
+      <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Simple 4-Step Process</span>
+      <h2 class="fw-bold text-dark tracking-tight">How Camp Registration Works</h2>
+      <p class="text-secondary">Registering takes under 2 minutes. No credit card, insurance, or complex medical history needed.</p>
+    </div>
+
+    <div class="row g-4 text-center">
+      <!-- Step 1 -->
+      <div class="col-md-3">
+        <div class="p-3">
+          <div class="step-number mx-auto mb-3">1</div>
+          <h5 class="fw-bold text-dark mb-2">Find a Camp</h5>
+          <p class="text-secondary small">
+            Browse upcoming medical camps by specialty, location city, and date to match your family's needs.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="col-md-3">
+        <div class="p-3">
+          <div class="step-number mx-auto mb-3">2</div>
+          <h5 class="fw-bold text-dark mb-2">Fill Simple Form</h5>
+          <p class="text-secondary small">
+            Enter basic contact details (name, age, phone, and optional symptoms). Never sensitive private data.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="col-md-3">
+        <div class="p-3">
+          <div class="step-number mx-auto mb-3">3</div>
+          <h5 class="fw-bold text-dark mb-2">Instant Pass</h5>
+          <p class="text-secondary small">
+            Receive a unique reference number and a print-ready confirmation pass with venue guidelines.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="col-md-3">
+        <div class="p-3">
+          <div class="step-number mx-auto mb-3">4</div>
+          <h5 class="fw-bold text-dark mb-2">Attend &amp; Receive Care</h5>
+          <p class="text-secondary small">
+            Show your pass reference at reception on camp day for free fast-track doctor consultations and tests.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/register" class="btn btn-teal btn-lg px-5 py-2">
+        <i class="bi bi-pencil-square me-2"></i> Register for Next Camp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5" style="background: linear-gradient(135deg, #0f766e 0%, #0c4a6e 100%);">
+  <div class="container text-center text-white py-3">
+    <h2 class="display-6 fw-bold mb-3">Organizing or Sponsoring a Medical Camp?</h2>
+    <p class="lead text-light mb-4" style="max-width: 650px; margin: 0 auto; opacity: 0.9;">
+      Partner with our healthcare network to manage registration logistics, prevent overcrowding, and deliver verified healthcare services to communities.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="/contact" class="btn btn-light btn-lg px-4 text-teal fw-bold">
+        <i class="bi bi-chat-left-dots me-1"></i> Partner with Us
+      </a>
+      <a href="/admin/login" class="btn btn-outline-light btn-lg px-4">
+        <i class="bi bi-shield-lock me-1"></i> Hospital Admin Portal
+      </a>
+    </div>
+  </div>
+</section>

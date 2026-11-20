@@ -1,0 +1,381 @@
+:root {
+  --primary-teal: #0d9488;
+  --primary-teal-dark: #0f766e;
+  --primary-teal-light: #14b8a6;
+  --teal-subtle: #f0fdfa;
+  --teal-border: #99f6e4;
+  --dark-navy: #0f172a;
+  --dark-slate: #1e293b;
+  --light-slate: #64748b;
+  --bg-soft-gray: #f8fafc;
+  --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --card-hover-shadow: 0 20px 30px -10px rgba(13, 148, 136, 0.15), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
+  --radius-card: 14px;
+  --radius-pill: 50px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #334155;
+  background-color: var(--bg-soft-gray);
+  line-height: 1.6;
+}
+
+/* Header & Navbar */
+.top-announcement-bar {
+  background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%);
+  font-size: 0.825rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.brand-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);
+}
+
+.brand-subtext {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+  font-weight: 500;
+  color: #475569;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+  color: var(--primary-teal);
+  background-color: var(--teal-subtle);
+}
+
+.navbar .nav-link.active {
+  color: var(--primary-teal) !important;
+  font-weight: 600;
+  background-color: rgba(13, 148, 136, 0.08);
+}
+
+/* Color Utilities */
+.text-teal {
+  color: var(--primary-teal) !important;
+}
+
+.text-teal-dark {
+  color: var(--primary-teal-dark) !important;
+}
+
+.bg-teal {
+  background-color: var(--primary-teal) !important;
+}
+
+.bg-teal-subtle {
+  background-color: var(--teal-subtle) !important;
+  border: 1px solid var(--teal-border);
+}
+
+.border-teal {
+  border-color: var(--primary-teal) !important;
+}
+
+/* Button Styles */
+.btn-teal {
+  background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  transition: all 0.25s ease;
+}
+
+.btn-teal:hover, .btn-teal:focus {
+  background: linear-gradient(135deg, #0e857b 0%, #0c615a 100%);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.35);
+}
+
+.btn-outline-teal {
+  color: var(--primary-teal);
+  border: 1.5px solid var(--primary-teal);
+  background: transparent;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-teal:hover {
+  background-color: var(--primary-teal);
+  color: #ffffff;
+  border-color: var(--primary-teal);
+  transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #ffffff 100%);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  border: 1px solid var(--teal-border);
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-teal-dark);
+}
+
+/* Card Styles */
+.camp-card {
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.camp-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.camp-card-img-wrapper {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+.camp-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.camp-card:hover .camp-card-img {
+  transform: scale(1.05);
+}
+
+.camp-status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.camp-capacity-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 50px;
+  background-color: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+}
+
+/* Feature & Stat Cards */
+.feature-card {
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  background: #ffffff;
+  transition: all 0.25s ease;
+  height: 100%;
+}
+
+.feature-card:hover {
+  border-color: var(--teal-border);
+  box-shadow: var(--card-shadow);
+  transform: translateY(-3px);
+}
+
+.feature-icon-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+}
+
+.stat-metric-card {
+  background: #ffffff;
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--primary-teal);
+  transition: transform 0.2s ease;
+}
+
+.stat-metric-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Form Styles */
+.form-card {
+  background: #ffffff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  border: 1px solid #e2e8f0;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin-bottom: 0.4rem;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* Step badges for how it works */
+.step-number {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-teal);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);
+}
+
+/* Registration Pass Ticket Styling */
+.pass-container {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.pass-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.12);
+  border: 1px solid #cbd5e1;
+}
+
+.pass-header {
+  background: linear-gradient(135deg, #0f766e 0%, #0c4a6e 100%);
+  color: #ffffff;
+  padding: 1.5rem 2rem;
+  position: relative;
+}
+
+.pass-body {
+  padding: 2rem;
+}
+
+.pass-barcode-box {
+  background: #f8fafc;
+  border: 2px dashed #94a3b8;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.barcode-font {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-size: 1.35rem;
+}
+
+/* Admin Dashboard Table */
+.admin-table th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  padding: 0.85rem 1rem;
+}
+
+.admin-table td {
+  padding: 0.95rem 1rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+/* Print Optimization */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .site-header,
+  .site-footer,
+  .print-hide,
+  .btn,
+  .top-announcement-bar {
+    display: none !important;
+  }
+
+  .pass-card {
+    box-shadow: none !important;
+    border: 2px solid #000000 !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid;
+  }
+
+  .pass-header {
+    background: #0f766e !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

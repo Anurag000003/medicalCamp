@@ -1,0 +1,195 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Community Clinics</span>
+        <h1 class="display-6 fw-bold text-dark mb-1">Discover Available Medical Camps</h1>
+        <p class="text-secondary mb-0">Browse free health checkups, preventive clinics, and doctor consultation drives.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+        <a href="/register" class="btn btn-teal px-4 py-2">
+          <i class="bi bi-person-plus me-1"></i> Register as Patient
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <!-- Filter & Search Controls -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+      <form action="/camps" method="GET" class="row g-3 align-items-end">
+        <!-- Search Keyword -->
+        <div class="col-lg-4 col-md-6">
+          <label for="searchQuery" class="form-label">Search Camps</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" id="searchQuery" name="search" value="<%= filters.search %>" placeholder="Camp name, venue, city, hospital...">
+          </div>
+        </div>
+
+        <!-- Specialty Filter -->
+        <div class="col-lg-2 col-md-6">
+          <label for="filterSpecialty" class="form-label">Medical Specialty</label>
+          <select class="form-select" id="filterSpecialty" name="specialty">
+            <option value="all" <%= filters.specialty === 'all' ? 'selected' : '' %>>All Specialties</option>
+            <% allSpecialties.forEach(sp => { %>
+              <option value="<%= sp %>" <%= filters.specialty === sp ? 'selected' : '' %>><%= sp %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- City Filter -->
+        <div class="col-lg-2 col-md-6">
+          <label for="filterCity" class="form-label">City / Region</label>
+          <select class="form-select" id="filterCity" name="city">
+            <option value="all" <%= filters.city === 'all' ? 'selected' : '' %>>All Cities</option>
+            <% allCities.forEach(ct => { %>
+              <option value="<%= ct %>" <%= filters.city.toLowerCase() === ct.toLowerCase() ? 'selected' : '' %>><%= ct %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="col-lg-2 col-md-6">
+          <label for="filterStatus" class="form-label">Status</label>
+          <select class="form-select" id="filterStatus" name="status">
+            <option value="all" <%= filters.status === 'all' ? 'selected' : '' %>>All Statuses</option>
+            <option value="Upcoming" <%= filters.status === 'Upcoming' ? 'selected' : '' %>>Upcoming</option>
+            <option value="Ongoing" <%= filters.status === 'Ongoing' ? 'selected' : '' %>>Ongoing (Today)</option>
+            <option value="Completed" <%= filters.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+        </div>
+
+        <!-- Sort By -->
+        <div class="col-lg-2 col-md-6">
+          <label for="filterSort" class="form-label">Sort Order</label>
+          <select class="form-select" id="filterSort" name="sortBy">
+            <option value="date_asc" <%= filters.sortBy === 'date_asc' ? 'selected' : '' %>>Date: Soonest</option>
+            <option value="date_desc" <%= filters.sortBy === 'date_desc' ? 'selected' : '' %>>Date: Latest</option>
+            <option value="name_asc" <%= filters.sortBy === 'name_asc' ? 'selected' : '' %>>Name: A to Z</option>
+            <option value="capacity_desc" <%= filters.sortBy === 'capacity_desc' ? 'selected' : '' %>>Largest Capacity</option>
+          </select>
+        </div>
+
+        <!-- Form Submit & Clear -->
+        <div class="col-12 d-flex justify-content-between align-items-center pt-2 flex-wrap gap-2">
+          <div class="small text-muted">
+            Showing <strong class="text-teal"><%= resultCount %></strong> <%= resultCount === 1 ? 'medical camp' : 'medical camps' %> found
+            <% if (filters.search || filters.specialty !== 'all' || filters.city !== 'all' || filters.status !== 'all') { %>
+              <span class="badge bg-light text-dark border ms-2">Filtered Results</span>
+            <% } %>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="/camps" class="btn btn-outline-secondary btn-sm px-3 py-2">
+              <i class="bi bi-x-circle me-1"></i> Reset Filters
+            </a>
+            <button type="submit" class="btn btn-teal btn-sm px-4 py-2">
+              <i class="bi bi-funnel-fill me-1"></i> Apply Filters
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Camp Cards Grid -->
+    <div class="row g-4">
+      <% if (camps && camps.length > 0) { %>
+        <% camps.forEach(camp => { %>
+          <div class="col-lg-4 col-md-6">
+            <div class="camp-card">
+              <div class="camp-card-img-wrapper">
+                <img src="<%= camp.image || '/images/camp-default.svg' %>" alt="<%= camp.name %>" class="camp-card-img" onerror="this.src='/images/camp-default.svg'">
+                
+                <!-- Status Badge -->
+                <% if (camp.status === 'Upcoming') { %>
+                  <span class="camp-status-badge bg-primary text-white">Upcoming</span>
+                <% } else if (camp.status === 'Ongoing') { %>
+                  <span class="camp-status-badge bg-success text-white">Ongoing</span>
+                <% } else if (camp.status === 'Completed') { %>
+                  <span class="camp-status-badge bg-secondary text-white">Completed</span>
+                <% } else { %>
+                  <span class="camp-status-badge bg-danger text-white">Cancelled</span>
+                <% } %>
+
+                <!-- Capacity Badge -->
+                <span class="camp-capacity-badge">
+                  <% if (camp.isFull) { %>
+                    <span class="text-warning"><i class="bi bi-exclamation-triangle-fill me-1"></i>Full</span>
+                  <% } else if (!camp.isOpen) { %>
+                    <span class="text-danger">Closed</span>
+                  <% } else { %>
+                    <i class="bi bi-ticket-perforated me-1"></i>
+                    <%= camp.remainingCapacity %> / <%= camp.capacity %> Left
+                  <% } %>
+                </span>
+              </div>
+
+              <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
+                  <span><i class="bi bi-calendar-event text-teal me-1"></i><%= camp.formattedDate %></span>
+                  <span>&bull;</span>
+                  <span><i class="bi bi-clock text-teal me-1"></i><%= camp.startTime %> – <%= camp.endTime %></span>
+                </div>
+
+                <h5 class="card-title fw-bold text-dark mb-2">
+                  <a href="/camps/<%= camp._id %>" class="text-decoration-none text-dark hover-teal"><%= camp.name %></a>
+                </h5>
+
+                <p class="card-text text-secondary small mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  <%= camp.description %>
+                </p>
+
+                <div class="mb-3">
+                  <div class="small text-muted mb-1"><i class="bi bi-geo-alt-fill text-teal me-1"></i><%= camp.location.venue %>, <%= camp.location.city %></div>
+                  <div class="small text-muted"><i class="bi bi-hospital me-1 text-teal"></i><%= camp.organizer.hospital || camp.organizer.name %></div>
+                </div>
+
+                <!-- Specialties tags -->
+                <div class="d-flex flex-wrap gap-1 mb-4">
+                  <% camp.specialties.forEach(sp => { %>
+                    <span class="badge bg-light text-dark border"><%= sp %></span>
+                  <% }) %>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 pt-2 border-top">
+                  <a href="/camps/<%= camp._id %>" class="btn btn-outline-secondary btn-sm flex-grow-1 py-2">
+                    <i class="bi bi-info-circle me-1"></i> View Details
+                  </a>
+                  <% if (camp.isOpen) { %>
+                    <a href="/register?campId=<%= camp._id %>" class="btn btn-teal btn-sm flex-grow-1 py-2">
+                      <i class="bi bi-pencil-square me-1"></i> Register Now
+                    </a>
+                  <% } else { %>
+                    <button class="btn btn-secondary btn-sm flex-grow-1 py-2" disabled>
+                      <%= camp.isFull ? 'Camp Full' : 'Registration Closed' %>
+                    </button>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12">
+          <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+            <div class="mb-3 text-muted display-4"><i class="bi bi-search"></i></div>
+            <h4 class="fw-bold text-dark mb-2">No Medical Camps Match Your Criteria</h4>
+            <p class="text-secondary small mb-4" style="max-width: 500px; margin: 0 auto;">
+              Try broadening your search keywords, clearing medical specialty filters, or resetting the filter options.
+            </p>
+            <div>
+              <a href="/camps" class="btn btn-teal px-4 py-2">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset All Filters
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>

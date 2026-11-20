@@ -1,0 +1,238 @@
+<% layout('layouts/boilerplate') -%>
+
+<!-- Camp Header Banner -->
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-2">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="/" class="text-teal text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="/camps" class="text-teal text-decoration-none">Medical Camps</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= camp.name %></li>
+      </ol>
+    </nav>
+
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <% if (camp.status === 'Upcoming') { %>
+            <span class="badge bg-primary px-3 py-1">Upcoming Camp</span>
+          <% } else if (camp.status === 'Ongoing') { %>
+            <span class="badge bg-success px-3 py-1">Happening Today</span>
+          <% } else if (camp.status === 'Completed') { %>
+            <span class="badge bg-secondary px-3 py-1">Completed</span>
+          <% } else { %>
+            <span class="badge bg-danger px-3 py-1">Cancelled</span>
+          <% } %>
+
+          <% if (camp.isFull) { %>
+            <span class="badge bg-warning text-dark px-3 py-1">Registration Full</span>
+          <% } else if (camp.isOpen) { %>
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">Registrations Open</span>
+          <% } else { %>
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-1">Registration Closed</span>
+          <% } %>
+        </div>
+
+        <h1 class="display-6 fw-bold text-dark mb-2"><%= camp.name %></h1>
+        <p class="text-muted mb-0">
+          <i class="bi bi-hospital text-teal me-1"></i> Organized by <strong><%= camp.organizer.name %></strong>
+          <% if (camp.organizer.hospital) { %> (<%= camp.organizer.hospital %>) <% } %>
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <% if (camp.isOpen) { %>
+          <a href="/register?campId=<%= camp._id %>" class="btn btn-teal btn-lg px-4 py-2 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-pencil-square"></i>
+            <span>Register for Free Pass</span>
+          </a>
+        <% } else { %>
+          <button class="btn btn-secondary btn-lg px-4 py-2" disabled>
+            <%= camp.isFull ? 'Camp is Full' : 'Registration Closed' %>
+          </button>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Left Column: Details, Services, Location -->
+      <div class="col-lg-8">
+        <!-- Visual Hero Image -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 bg-white">
+          <div style="height: 320px; overflow: hidden;" class="position-relative">
+            <img src="<%= camp.image || '/images/camp-default.svg' %>" alt="<%= camp.name %>" class="w-100 h-100 object-fit-cover" onerror="this.src='/images/camp-default.svg'">
+          </div>
+          <div class="p-4">
+            <h4 class="fw-bold text-dark mb-3">About This Medical Camp</h4>
+            <p class="text-secondary leading-relaxed mb-4">
+              <%= camp.description %>
+            </p>
+
+            <h5 class="fw-bold text-dark mb-3 border-start border-3 border-teal ps-2">Available Free Medical Services</h5>
+            <div class="row g-2 mb-4">
+              <% camp.services.forEach(service => { %>
+                <div class="col-md-6">
+                  <div class="p-3 bg-light rounded-3 d-flex align-items-center gap-2 border">
+                    <i class="bi bi-check2-circle text-teal fs-5 flex-shrink-0"></i>
+                    <span class="small fw-semibold text-dark"><%= service %></span>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+
+            <h5 class="fw-bold text-dark mb-3 border-start border-3 border-teal ps-2">Medical Specialties Represented</h5>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <% camp.specialties.forEach(sp => { %>
+                <span class="badge bg-teal-subtle text-teal border border-teal px-3 py-2 fs-6">
+                  <i class="bi bi-patch-check-fill me-1"></i> <%= sp %>
+                </span>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue & Directions Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+          <h5 class="fw-bold text-dark mb-3 border-start border-3 border-teal ps-2">Venue &amp; Location Details</h5>
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <div class="feature-icon-circle bg-teal text-white flex-shrink-0" style="width: 48px; height: 48px; font-size: 1.25rem;">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <h6 class="fw-bold text-dark mb-1"><%= camp.location.venue %></h6>
+              <p class="text-secondary mb-1"><%= camp.location.address %></p>
+              <p class="text-secondary small mb-0"><%= camp.location.city %>, <%= camp.location.state %> <%= camp.location.pincode %></p>
+            </div>
+          </div>
+          <div class="p-3 bg-light rounded-3 small text-muted border">
+            <i class="bi bi-info-circle me-1 text-teal"></i> Parking is available on-site. Wheelchair accessible ramps and reception counters are stationed at the main entrance.
+          </div>
+        </div>
+
+        <!-- Organizing Body & Medical Leadership -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+          <h5 class="fw-bold text-dark mb-3 border-start border-3 border-teal ps-2">Organizing Body &amp; Clinical Lead</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="small text-muted">Lead Organization</div>
+              <div class="fw-bold text-dark fs-6"><%= camp.organizer.name %></div>
+              <% if (camp.organizer.hospital) { %>
+                <div class="small text-secondary"><%= camp.organizer.hospital %></div>
+              <% } %>
+            </div>
+            <div class="col-md-6">
+              <div class="small text-muted">Outreach Coordinator / Lead Doctor</div>
+              <div class="fw-bold text-dark fs-6"><%= camp.organizer.contactPerson || 'Senior Medical Officer' %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Schedule & Registration Callout -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 85px;">
+          <h5 class="fw-bold text-dark mb-3">Registration Status</h5>
+
+          <!-- Capacity Bar -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between small text-muted mb-1">
+              <span>Capacity Booked</span>
+              <strong><%= camp.registrationCount %> / <%= camp.capacity %> (<%= Math.round((camp.registrationCount / camp.capacity) * 100) %>%)</strong>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <% const pct = Math.round((camp.registrationCount / camp.capacity) * 100); %>
+              <div class="progress-bar <%= pct >= 95 ? 'bg-danger' : pct >= 75 ? 'bg-warning' : 'bg-teal' %>" role="progressbar" style="width: <%= pct %>%;" aria-valuenow="<%= pct %>" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between mt-2 small">
+              <span class="text-success fw-bold"><i class="bi bi-ticket-perforated me-1"></i><%= camp.remainingCapacity %> Slots Remaining</span>
+              <span class="text-muted"><%= camp.capacity %> Total Limit</span>
+            </div>
+          </div>
+
+          <!-- Schedule Box -->
+          <div class="p-3 bg-light rounded-3 mb-4 border">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <i class="bi bi-calendar3 text-teal"></i>
+              <div>
+                <div class="small text-muted">Date</div>
+                <strong class="text-dark"><%= camp.formattedDate %></strong>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-clock-history text-teal"></i>
+              <div>
+                <div class="small text-muted">Timings</div>
+                <strong class="text-dark"><%= camp.startTime %> – <%= camp.endTime %></strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="mb-4">
+            <% if (camp.isOpen) { %>
+              <a href="/register?campId=<%= camp._id %>" class="btn btn-teal w-100 py-3 fw-bold fs-6 shadow-sm">
+                <i class="bi bi-pencil-square me-2"></i> Register for Free Pass
+              </a>
+              <div class="text-center small text-muted mt-2">
+                <i class="bi bi-shield-lock me-1"></i> Free pass confirmation issued instantly
+              </div>
+            <% } else if (camp.isFull) { %>
+              <div class="alert alert-warning text-center mb-0">
+                <i class="bi bi-exclamation-triangle-fill d-block fs-4 mb-2 text-warning"></i>
+                <h6 class="fw-bold mb-1">Registration Full</h6>
+                <p class="small mb-0">This camp has reached its maximum patient capacity. Please explore our other camps.</p>
+              </div>
+              <a href="/camps" class="btn btn-outline-teal w-100 mt-3">Find Another Camp</a>
+            <% } else { %>
+              <div class="alert alert-secondary text-center mb-0">
+                <i class="bi bi-calendar-x d-block fs-4 mb-2"></i>
+                <h6 class="fw-bold mb-1">Registration Closed</h6>
+                <p class="small mb-0">This camp has concluded or is not accepting new registrations.</p>
+              </div>
+              <a href="/camps" class="btn btn-outline-secondary w-100 mt-3">Browse Active Camps</a>
+            <% } %>
+          </div>
+
+          <!-- Direct Inquiries & Helpline -->
+          <div class="border-top pt-3">
+            <h6 class="fw-bold text-dark mb-2 small text-uppercase">Questions About This Camp?</h6>
+            <div class="small text-muted mb-1"><i class="bi bi-telephone-fill text-teal me-2"></i><%= camp.contactInformation.phone %></div>
+            <div class="small text-muted mb-1"><i class="bi bi-envelope-fill text-teal me-2"></i><%= camp.contactInformation.email %></div>
+            <% if (camp.contactInformation.helpline) { %>
+              <div class="small text-muted"><i class="bi bi-headset text-teal me-2"></i><%= camp.contactInformation.helpline %></div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Upcoming Camps -->
+    <% if (otherCamps && otherCamps.length > 0) { %>
+      <div class="mt-5 pt-4 border-top">
+        <h4 class="fw-bold text-dark mb-4">Other Upcoming Medical Camps</h4>
+        <div class="row g-4">
+          <% otherCamps.forEach(other => { %>
+            <div class="col-md-4">
+              <div class="camp-card">
+                <div class="camp-card-img-wrapper" style="height: 140px;">
+                  <img src="<%= other.image || '/images/camp-default.svg' %>" alt="<%= other.name %>" class="camp-card-img" onerror="this.src='/images/camp-default.svg'">
+                  <span class="camp-capacity-badge small"><%= other.remainingCapacity %> Left</span>
+                </div>
+                <div class="p-3 d-flex flex-column flex-grow-1">
+                  <div class="small text-teal fw-semibold mb-1"><%= other.formattedDate %></div>
+                  <h6 class="fw-bold text-dark mb-2"><a href="/camps/<%= other._id %>" class="text-dark text-decoration-none hover-teal"><%= other.name %></a></h6>
+                  <div class="small text-muted mb-3"><i class="bi bi-geo-alt me-1"></i><%= other.location.city %></div>
+                  <a href="/camps/<%= other._id %>" class="btn btn-sm btn-outline-teal mt-auto">View Camp Details</a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>

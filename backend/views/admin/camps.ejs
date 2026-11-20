@@ -1,0 +1,146 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb small mb-1">
+            <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-teal text-decoration-none">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Medical Camps</li>
+          </ol>
+        </nav>
+        <h1 class="h3 fw-bold text-dark mb-0">Manage Medical Camps</h1>
+        <p class="text-secondary small mb-0">Create, edit, monitor capacity, or archive medical outreach camps.</p>
+      </div>
+
+      <div>
+        <a href="/admin/camps/new" class="btn btn-teal px-4 py-2">
+          <i class="bi bi-plus-circle me-1"></i> Add New Camp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+
+    <!-- Search & Filter Card -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
+      <form action="/admin/camps" method="GET" class="row g-2 align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" name="search" value="<%= searchQuery %>" placeholder="Search by camp name, venue, city, or hospital...">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" name="status">
+            <option value="all" <%= selectedStatus === 'all' ? 'selected' : '' %>>All Statuses</option>
+            <option value="Upcoming" <%= selectedStatus === 'Upcoming' ? 'selected' : '' %>>Upcoming</option>
+            <option value="Ongoing" <%= selectedStatus === 'Ongoing' ? 'selected' : '' %>>Ongoing</option>
+            <option value="Completed" <%= selectedStatus === 'Completed' ? 'selected' : '' %>>Completed</option>
+            <option value="Cancelled" <%= selectedStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button type="submit" class="btn btn-teal flex-grow-1">Filter</button>
+          <a href="/admin/camps" class="btn btn-outline-secondary">Reset</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Camps Table -->
+    <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+      <div class="table-responsive">
+        <table class="table admin-table mb-0">
+          <thead>
+            <tr>
+              <th>Camp Name &amp; Hospital</th>
+              <th>Date &amp; Hours</th>
+              <th>Location</th>
+              <th>Capacity / Booked</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (camps && camps.length > 0) { %>
+              <% camps.forEach(camp => { %>
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark"><%= camp.name %></div>
+                    <div class="small text-muted"><%= camp.organizer.hospital || camp.organizer.name %></div>
+                    <div class="d-flex gap-1 mt-1">
+                      <% camp.specialties.slice(0, 2).forEach(sp => { %>
+                        <span class="badge bg-light text-muted border" style="font-size: 0.7rem;"><%= sp %></span>
+                      <% }) %>
+                      <% if (camp.specialties.length > 2) { %>
+                        <span class="badge bg-light text-muted border" style="font-size: 0.7rem;">+<%= camp.specialties.length - 2 %></span>
+                      <% } %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="small fw-semibold text-dark"><i class="bi bi-calendar3 me-1 text-teal"></i><%= camp.formattedDate %></div>
+                    <div class="small text-muted"><%= camp.startTime %> – <%= camp.endTime %></div>
+                  </td>
+                  <td>
+                    <div class="small fw-semibold text-dark"><%= camp.location.venue %></div>
+                    <div class="small text-muted"><%= camp.location.city %>, <%= camp.location.state %></div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <strong class="<%= camp.registrationCount >= camp.capacity ? 'text-danger' : 'text-teal' %>">
+                        <%= camp.registrationCount %> / <%= camp.capacity %>
+                      </strong>
+                      <span class="small text-muted">(<%= camp.remainingCapacity %> left)</span>
+                    </div>
+                    <div class="progress mt-1" style="height: 5px; width: 120px;">
+                      <% const pct = Math.round((camp.registrationCount / camp.capacity) * 100); %>
+                      <div class="progress-bar <%= pct >= 90 ? 'bg-danger' : pct >= 70 ? 'bg-warning' : 'bg-teal' %>" style="width: <%= pct %>%;"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <% if (camp.status === 'Upcoming') { %>
+                      <span class="badge bg-primary">Upcoming</span>
+                    <% } else if (camp.status === 'Ongoing') { %>
+                      <span class="badge bg-success">Ongoing</span>
+                    <% } else if (camp.status === 'Completed') { %>
+                      <span class="badge bg-secondary">Completed</span>
+                    <% } else { %>
+                      <span class="badge bg-danger">Cancelled</span>
+                    <% } %>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm">
+                      <a href="/camps/<%= camp._id %>" target="_blank" class="btn btn-outline-secondary" title="View Public Page">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                      <a href="/admin/camps/<%= camp._id %>/edit" class="btn btn-outline-primary" title="Edit Camp">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <form action="/admin/camps/<%= camp._id %>?_method=DELETE" method="POST" class="d-inline delete-camp-form" data-camp-name="<%= camp.name %>">
+                        <button type="submit" class="btn btn-outline-danger" title="Delete or Archive Camp">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center py-5 text-muted">
+                  <i class="bi bi-hospital fs-3 d-block mb-2 text-secondary"></i>
+                  No medical camps found matching your filter criteria.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

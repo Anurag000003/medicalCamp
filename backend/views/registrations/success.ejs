@@ -1,0 +1,161 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-4 bg-white border-bottom print-hide">
+  <div class="container text-center">
+    <div class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 mb-2">Registration Confirmed</div>
+    <h1 class="h3 fw-bold text-dark mb-1">Your Medical Camp Registration Pass is Ready!</h1>
+    <p class="text-secondary small mb-0">Please save, download, or print this pass and bring it along on the day of the camp.</p>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="pass-container">
+
+      <!-- Action Bar (Print / Register Another) -->
+      <div class="d-flex justify-content-between align-items-center mb-4 print-hide flex-wrap gap-2">
+        <a href="/camps" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Camp Listings
+        </a>
+        <div class="d-flex gap-2">
+          <a href="/register" class="btn btn-outline-teal btn-sm">
+            <i class="bi bi-person-plus me-1"></i> Register Another Person
+          </a>
+          <button type="button" class="btn btn-teal btn-sm" id="btnPrintPass">
+            <i class="bi bi-printer-fill me-1"></i> Print / Save Pass (PDF)
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Pass Card -->
+      <div class="pass-card">
+        <!-- Pass Header -->
+        <div class="pass-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div class="d-flex align-items-center">
+            <span class="brand-icon-box bg-white text-teal me-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px;">
+              <i class="bi bi-hospital fs-4 text-teal"></i>
+            </span>
+            <div>
+              <h4 class="fw-bold mb-0 text-white">Community Medical Camp Pass</h4>
+              <span class="small text-white-50">Official Healthcare Outreach Admission Voucher</span>
+            </div>
+          </div>
+          <div class="text-end">
+            <span class="badge bg-success fs-6 px-3 py-1 text-uppercase">
+              <i class="bi bi-check-circle-fill me-1"></i> <%= registration.registrationStatus %>
+            </span>
+          </div>
+        </div>
+
+        <!-- Pass Body -->
+        <div class="pass-body">
+          <!-- Top Voucher Reference Box -->
+          <div class="pass-barcode-box mb-4">
+            <div class="text-muted small text-uppercase fw-bold mb-1">Unique Registration Reference</div>
+            <div class="barcode-font text-teal display-6 mb-1" id="passReferenceCode">
+              <%= registration.registrationReference %>
+            </div>
+            <div class="small text-secondary">
+              Generated: <%= new Date(registration.createdAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) %>
+            </div>
+          </div>
+
+          <!-- 2 Columns: Participant Details & Camp Details -->
+          <div class="row g-4 mb-4">
+            <!-- Left: Participant Info -->
+            <div class="col-md-6 border-end">
+              <h6 class="text-uppercase text-muted fw-bold small mb-3 border-start border-3 border-teal ps-2">Participant Information</h6>
+              
+              <div class="mb-2">
+                <span class="text-muted small d-block">Full Name</span>
+                <strong class="text-dark fs-5"><%= registration.fullName %></strong>
+              </div>
+
+              <div class="row g-2 mb-2">
+                <div class="col-6">
+                  <span class="text-muted small d-block">Age</span>
+                  <span class="fw-bold text-dark"><%= registration.age %> Years</span>
+                </div>
+                <div class="col-6">
+                  <span class="text-muted small d-block">Gender</span>
+                  <span class="fw-bold text-dark"><%= registration.gender %></span>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-muted small d-block">Contact Phone</span>
+                <span class="fw-bold text-dark"><%= registration.contactNumber %></span>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-muted small d-block">Email Address</span>
+                <span class="text-dark"><%= registration.email %></span>
+              </div>
+
+              <div class="mb-0">
+                <span class="text-muted small d-block">Residential Address / City</span>
+                <span class="text-dark small"><%= registration.address %></span>
+              </div>
+            </div>
+
+            <!-- Right: Camp Details -->
+            <div class="col-md-6">
+              <h6 class="text-uppercase text-muted fw-bold small mb-3 border-start border-3 border-teal ps-2">Camp &amp; Schedule Details</h6>
+
+              <div class="mb-2">
+                <span class="text-muted small d-block">Camp Name</span>
+                <strong class="text-teal fs-6"><%= camp ? camp.name : 'Medical Outreach Camp' %></strong>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-muted small d-block">Date &amp; Operating Hours</span>
+                <span class="fw-bold text-dark">
+                  <i class="bi bi-calendar3 me-1 text-teal"></i>
+                  <%= camp ? camp.formattedDate : 'Scheduled Date' %>
+                </span>
+                <div class="small text-secondary">
+                  <i class="bi bi-clock me-1 text-teal"></i>
+                  <%= camp ? `${camp.startTime} – ${camp.endTime}` : 'Morning Clinic' %>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-muted small d-block">Venue Location</span>
+                <div class="fw-semibold text-dark"><%= camp ? camp.location.venue : 'Community Civic Center' %></div>
+                <div class="small text-muted"><%= camp ? `${camp.location.address}, ${camp.location.city}, ${camp.location.state} ${camp.location.pincode}` : '' %></div>
+              </div>
+
+              <div class="mb-0">
+                <span class="text-muted small d-block">Organized By</span>
+                <div class="small text-dark fw-semibold"><%= camp ? camp.organizer.name : 'Health Outreach Trust' %></div>
+                <% if (camp && camp.organizer.hospital) { %>
+                  <div class="small text-secondary"><%= camp.organizer.hospital %></div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Important Guidelines for Camp Day -->
+          <div class="p-3 bg-light rounded-3 border">
+            <h6 class="fw-bold text-dark mb-2 small text-uppercase">
+              <i class="bi bi-info-circle-fill text-teal me-1"></i> Important Instructions for Camp Day
+            </h6>
+            <ul class="mb-0 small text-secondary ps-3">
+              <li><strong>Arrival:</strong> Please arrive 15 minutes prior to scheduled session time to complete token check-in.</li>
+              <li><strong>Identification:</strong> Bring a valid government photo ID matching the participant's full name.</li>
+              <li><strong>Fasting Note:</strong> If seeking fasting blood glucose or comprehensive lipid testing, please maintain an 8-hour overnight fast. Water is permitted.</li>
+              <li><strong>Prior Records:</strong> Feel free to carry past prescriptions or medical records for review with the specialist doctors.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Pass Footer -->
+        <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center small text-muted flex-wrap gap-2">
+          <span>Registration Helpdesk: <%= camp ? camp.contactInformation.phone : '1-800-MED-CAMP' %></span>
+          <span>Sysslan IT Solutions Healthcare Platform</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

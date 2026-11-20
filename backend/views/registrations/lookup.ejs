@@ -1,0 +1,82 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="py-4 bg-white border-bottom">
+  <div class="container text-center max-w-700 mx-auto" style="max-width: 680px;">
+    <span class="badge bg-teal-subtle text-teal text-uppercase px-3 py-1 mb-2">Participant Self-Service</span>
+    <h1 class="display-6 fw-bold text-dark mb-1">Find Your Registration Pass</h1>
+    <p class="text-secondary mb-0">Search using your Registration Reference Code (e.g. MCR-2026-XXXXXX), Email, or Phone Number.</p>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <!-- Search Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white mb-4">
+          <form action="/registrations/lookup" method="POST">
+            <div class="mb-3">
+              <label for="lookupQuery" class="form-label">Registration Reference, Phone, or Email <span class="text-danger">*</span></label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0 ps-0" id="lookupQuery" name="query" value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>" placeholder="e.g. MCR-2026-AB12CD or 555-111-2233" required>
+                <button type="submit" class="btn btn-teal px-4 fw-bold">Search</button>
+              </div>
+            </div>
+            <div class="form-text small text-muted">
+              Can't find your reference? Enter the exact email address or phone number you used during registration.
+            </div>
+          </form>
+        </div>
+
+        <!-- Search Results -->
+        <% if (typeof searched !== 'undefined' && searched) { %>
+          <% if (results && results.length > 0) { %>
+            <h5 class="fw-bold text-dark mb-3">Matching Registrations (<%= results.length %>)</h5>
+            <div class="d-flex flex-column gap-3">
+              <% results.forEach(reg => { %>
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                    <div>
+                      <span class="badge bg-light text-muted border text-uppercase mb-1"><%= reg.registrationReference %></span>
+                      <h5 class="fw-bold text-dark mb-1"><%= reg.fullName %></h5>
+                      <div class="small text-muted"><i class="bi bi-envelope me-1"></i><%= reg.email %> &nbsp;|&nbsp; <i class="bi bi-telephone me-1"></i><%= reg.contactNumber %></div>
+                    </div>
+                    <div>
+                      <span class="badge <%= reg.registrationStatus === 'Confirmed' ? 'bg-success' : reg.registrationStatus === 'Attended' ? 'bg-primary' : 'bg-danger' %> px-3 py-1">
+                        <%= reg.registrationStatus %>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-light rounded-3 my-2 border">
+                    <strong class="text-teal"><%= reg.campId ? reg.campId.name : 'Medical Camp' %></strong>
+                    <div class="small text-muted">
+                      <i class="bi bi-calendar-event me-1"></i> <%= reg.campId ? reg.campId.formattedDate : 'Scheduled Date' %> &nbsp;|&nbsp;
+                      <i class="bi bi-geo-alt me-1"></i> <%= reg.campId ? reg.campId.location.venue : 'Community Center' %>, <%= reg.campId ? reg.campId.location.city : '' %>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end gap-2 mt-2">
+                    <a href="/registrations/confirmation/<%= reg.registrationReference %>" class="btn btn-teal btn-sm px-3">
+                      <i class="bi bi-printer me-1"></i> View &amp; Print Pass
+                    </a>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="alert alert-warning text-center p-4 rounded-4 shadow-sm border-0">
+              <i class="bi bi-question-circle fs-3 text-warning d-block mb-2"></i>
+              <h5 class="fw-bold">No Registrations Found</h5>
+              <p class="small text-secondary mb-3">
+                No active registration record matched "<strong><%= searchTerm %></strong>". Please verify your entry or register for an upcoming camp.
+              </p>
+              <a href="/register" class="btn btn-teal btn-sm px-4">Register for a Camp</a>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
