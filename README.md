@@ -1,133 +1,128 @@
 # Medical Camp Registration Portal
 
-> **Sysslan IT Solutions — Full-Stack Software Development Task (Levels 1–5)**  
-> Built with **Node.js**, **Express.js**, **MongoDB**, **Mongoose**, **EJS**, and **Bootstrap 5**.
+Built with Node.js, Express.js, MongoDB, Mongoose, EJS, and Bootstrap 5.
 
 ---
 
-## 🏥 Project Overview
+## Project Overview
 
-The **Medical Camp Registration Portal** is a production-ready, responsive healthcare web application designed to connect community members with free medical screening clinics and doctor consultations. The platform provides:
+The Medical Camp Registration Portal is a responsive healthcare web application designed to connect community members with free medical screening clinics and doctor consultations. The platform provides:
 
-1. **A public patient portal** to discover medical camps, filter by medical specialty, review available diagnostic services, and register for instant, printable passes.
-2. **An administrative control panel** for healthcare organizers and hospital administrators to manage camp listings, monitor capacity utilization, and process participant admissions and cancellations safely.
+1. Public patient portal to discover medical camps, filter by medical specialty, review diagnostic services, and register for printable passes.
+2. Administrative control panel for healthcare organizers to manage camp listings, monitor capacity utilization, and manage participant records.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | HTML5, CSS3, JavaScript (ES6+), Bootstrap 5.3, Bootstrap Icons, EJS Templates (`ejs-mate`) |
-| **Backend** | Node.js (v18+), Express.js 4.x |
-| **Database** | MongoDB 7.x, Mongoose 8.x ODM |
-| **Authentication & Sessions** | `express-session`, `connect-mongo` (MongoDB-backed store), `bcryptjs` (password hashing) |
-| **Validation & Security** | `express-validator` (server-side), client-side constraint validation, `method-override` |
-| **Feedback & Logging** | `connect-flash` (session flash alerts), `morgan` (HTTP request logging) |
-| **Automated Testing** | `jest`, `supertest` (23 integration tests) |
+| Frontend | HTML5, CSS3, JavaScript (ES6+), Bootstrap 5.3, Bootstrap Icons, EJS (`ejs-mate`) |
+| Backend | Node.js (v18+), Express.js 4.x |
+| Database | MongoDB 7.x, Mongoose 8.x ODM |
+| Authentication & Sessions | express-session, connect-mongo, bcryptjs |
+| Validation & Security | express-validator, method-override |
+| Feedback & Logging | connect-flash, morgan |
+| Testing | jest, supertest (23 integration tests) |
 
 ---
 
-## 📂 Project Architecture
+## Project Architecture
 
 ```
 medical-camp-registration-portal/
-├── app.js                          # Main Express application & middleware pipeline
-├── package.json                    # Project dependencies & scripts
+├── app.js                          # Express application and middleware pipeline
+├── package.json                    # Project dependencies and scripts
 ├── .env.example                    # Environment variable template
 ├── .env                            # Local configuration (excluded from git)
 ├── .gitignore                      # Git ignore file
-├── README.md                       # Comprehensive project documentation
+├── README.md                       # Project documentation
 │
 ├── config/
-│   └── database.js                 # MongoDB connection & Mongoose initialization
+│   └── database.js                 # MongoDB connection and Mongoose initialization
 │
 ├── models/
-│   ├── Camp.js                     # Camp schema, virtuals, and compound indexes
+│   ├── Camp.js                     # Camp schema, virtuals, and indexes
 │   ├── Registration.js             # Registration schema, unique reference generator
 │   └── Admin.js                    # Admin user schema with bcrypt hashing
 │
 ├── controllers/
-│   ├── campController.js           # Public camp listing, search, details, and informational pages
-│   ├── registrationController.js   # Registration submission, validation, race-condition safety, pass display
-│   └── adminController.js          # Authentication, dashboard KPIs, camp CRUD, registration management
+│   ├── campController.js           # Camp listing, search, details, and informational pages
+│   ├── registrationController.js   # Registration handling, validation, pass display
+│   └── adminController.js          # Authentication, dashboard KPIs, camp CRUD, registrations
 │
 ├── routes/
 │   ├── campRoutes.js               # Public routes: /, /camps, /about, /contact
 │   ├── registrationRoutes.js       # Registration routes: /register, /registrations/*
-│   └── adminRoutes.js              # Admin routes: /admin/login, /admin/dashboard, /admin/camps, etc.
+│   └── adminRoutes.js              # Admin routes: /admin/login, /admin/dashboard, /admin/camps
 │
 ├── middleware/
 │   ├── authentication.js           # Session auth guards: ensureAuthenticated, forwardAuthenticated
-│   └── errorHandler.js             # 404 handler and global centralized error middleware
+│   └── errorHandler.js             # 404 handler and global error middleware
 │
 ├── validators/
 │   ├── campValidator.js            # express-validator rules for medical camp CRUD
-│   └── registrationValidator.js    # express-validator rules for participant registrations
+│   └── registrationValidator.js    # express-validator rules for registrations
 │
 ├── scripts/
-│   ├── createAdmin.js              # Initial administrator creation seed script
-│   └── seedCamps.js                # Realistic demonstration camps and sample registrations
+│   ├── createAdmin.js              # Administrator account creation script
+│   └── seedCamps.js                # Demonstration camps and sample registrations
 │
 ├── views/
 │   ├── layouts/
-│   │   └── boilerplate.ejs         # Reusable HTML5 layout with SEO tags, Bootstrap 5, and partials
+│   │   └── boilerplate.ejs         # HTML5 layout with Bootstrap 5 and partials
 │   ├── partials/
-│   │   ├── navbar.ejs              # Responsive navigation with active route highlighting
-│   │   ├── footer.ejs              # Medical mission statement, quick links, and emergency notice
-│   │   └── flash.ejs               # Dismissible alert banners for user feedback
+│   │   ├── navbar.ejs              # Navigation bar with active route highlighting
+│   │   ├── footer.ejs              # Footer links and emergency notice
+│   │   └── flash.ejs               # Flash alerts for user feedback
 │   ├── camps/
 │   │   ├── index.ejs               # Camp directory with search, filter, and sorting
-│   │   └── show.ejs                # Full camp details, schedule, capacity bar, and registration CTA
+│   │   └── show.ejs                # Full camp details, schedule, capacity bar, registration CTA
 │   ├── registrations/
-│   │   ├── new.ejs                 # Accessible registration form with live camp preview
-│   │   ├── success.ejs             # High-contrast, print-friendly confirmation pass
-│   │   └── lookup.ejs              # Self-service pass lookup by reference code or contact
+│   │   ├── new.ejs                 # Registration form with camp preview
+│   │   ├── success.ejs             # Confirmation pass view
+│   │   └── lookup.ejs              # Pass lookup by reference code or contact
 │   ├── admin/
-│   │   ├── login.ejs               # Dedicated admin login interface with credentials hint
-│   │   ├── dashboard.ejs           # Executive KPI cards, capacity feed, and recent registrations
-│   │   ├── camps.ejs               # Camp management table with Edit/Delete/Archive actions
-│   │   ├── campForm.ejs            # Reusable create & edit camp form
-│   │   └── registrations.ejs       # Searchable registration table with Attended/Cancel controls
-│   ├── home.ejs                    # Modern homepage (Hero, Purpose, Featured Camps, Workflow)
-│   ├── about.ejs                   # Healthcare equity mission and clinical commitments
-│   ├── contact.ejs                 # Outreach helpdesk form and emergency disclaimer
-│   ├── 404.ejs                     # Friendly 404 resource not found page
-│   └── error.ejs                   # Central error handling display
+│   │   ├── login.ejs               # Admin login interface
+│   │   ├── dashboard.ejs           # KPI cards, capacity feed, recent registrations
+│   │   ├── camps.ejs               # Camp management table
+│   │   ├── campForm.ejs            # Create and edit camp form
+│   │   └── registrations.ejs       # Registration table with status controls
+│   ├── home.ejs                    # Homepage
+│   ├── about.ejs                   # About page
+│   ├── contact.ejs                 # Contact page
+│   ├── 404.ejs                     # 404 page
+│   └── error.ejs                   # Error page
 │
 ├── public/
 │   ├── css/
-│   │   └── style.css               # Medical design system, custom teal palette, print stylesheets
+│   │   └── style.css               # Stylesheet and print styles
 │   ├── js/
-│   │   └── main.js                 # Dynamic camp preview, client-side validation, print trigger
+│   │   └── main.js                 # Camp preview, client validation, print trigger
 │   └── images/
-│       └── camp-default.svg        # Scalable vector medical placeholder banner
+│       └── camp-default.svg        # Placeholder banner
 │
 └── tests/
-    ├── camps.test.js               # Integration tests for public pages, search, and details
-    ├── registrations.test.js       # Integration tests for validation, duplicates, and capacity
-    └── admin.test.js               # Integration tests for auth protection, login, and camp CRUD
+    ├── camps.test.js               # Tests for public pages, search, details
+    ├── registrations.test.js       # Tests for validation, duplicates, capacity
+    └── admin.test.js               # Tests for authentication, login, camp CRUD
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Prerequisites
-- **Node.js** v18.0.0 or higher
-- **MongoDB** running locally on port 27017 or a MongoDB Atlas URI
+- Node.js v18.0.0 or higher
+- MongoDB running locally on port 27017 or a MongoDB Atlas URI
 
 ### 2. Installation
 ```bash
-# Clone or navigate to the project directory
-cd /Users/anurag/.gemini/antigravity-ide/scratch/medical-camp-registration-portal
-
-# Install all dependencies
 npm install
 ```
 
 ### 3. Environment Configuration
-Create a `.env` file in the project root (or copy `.env.example`):
+Create a `.env` file in the project root:
 ```bash
 cp .env.example .env
 ```
@@ -144,57 +139,54 @@ ADMIN_DEFAULT_NAME=Chief Medical Administrator
 ```
 
 ### 4. Database Seeding
-Seed the database with the administrator account and 6 demonstration medical camps:
 ```bash
-# Create initial administrator account
+# Create admin account
 npm run seed:admin
 
-# Populate demonstration camps and registrations
+# Populate sample camps and registrations
 npm run seed
 ```
 
 ### 5. Running the Application
 ```bash
-# Start server in production mode
+# Production mode
 npm start
 
-# Or with automatic reload during development
+# Development mode
 npm run dev
 ```
 
-Visit the application in your browser:
-- **Public Patient Portal:** [http://localhost:3000](http://localhost:3000)
-- **Medical Camps Directory:** [http://localhost:3000/camps](http://localhost:3000/camps)
-- **Patient Registration:** [http://localhost:3000/register](http://localhost:3000/register)
-- **Find My Pass:** [http://localhost:3000/registrations/lookup](http://localhost:3000/registrations/lookup)
-- **Administrator Login:** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
+Application URLs:
+- Public Patient Portal: http://localhost:3000
+- Medical Camps Directory: http://localhost:3000/camps
+- Patient Registration: http://localhost:3000/register
+- Pass Lookup: http://localhost:3000/registrations/lookup
+- Administrator Login: http://localhost:3000/admin/login
 
-**Default Administrator Credentials:**
-- **Email / Username:** `admin@medicalcamp.org` or `admin`
-- **Password:** `Admin@12345`
+Default Admin Credentials:
+- Email / Username: `admin@medicalcamp.org` or `admin`
+- Password: `Admin@12345`
 
 ---
 
-## 🧪 Automated Testing
-
-The project includes 23 automated integration tests verifying backend endpoints, capacity race conditions, validation rules, duplicate detection, and administrator authorization.
+## Testing
 
 Run the test suite:
 ```bash
 npm test
 ```
 
-### Test Coverage Highlights:
-- **`tests/camps.test.js`**: Homepage loading, public camp listings, search by keyword, filter by specialty, single camp view, invalid ObjectId handling, missing 404 pages.
-- **`tests/registrations.test.js`**: Form rendering, validation error handling (invalid age, phone, email, missing consent), atomic capacity increment, unique reference generation, confirmation pass loading, duplicate registration prevention, rejection when camp is full, and pass lookup.
-- **`tests/admin.test.js`**: Session route protection, invalid login rejection with 401, session issuance on valid login, admin dashboard access, Camp CRUD operations (Create, Read, Update, Delete/Archive), registration status updates, and cancellation with atomic capacity release.
+Test Coverage:
+- `tests/camps.test.js`: Homepage loading, camp listings, search, filter, camp view, 404 handling.
+- `tests/registrations.test.js`: Form rendering, input validation, atomic capacity increment, unique reference generation, duplicate prevention, capacity limits, pass lookup.
+- `tests/admin.test.js`: Route protection, login authentication, session management, camp CRUD, registration status updates, capacity release on cancellation.
 
 ---
 
-## 🔒 Security & Capacity Architecture
+## Security and Capacity Architecture
 
-### 1. Atomic Capacity Tracking & Race Condition Protection
-To prevent overbooking when multiple users register simultaneously, registration counts are updated atomically at the database level:
+### 1. Atomic Capacity Tracking
+Registration counts use atomic increments to prevent overbooking:
 ```javascript
 const updatedCamp = await Camp.findOneAndUpdate(
   {
@@ -208,83 +200,85 @@ const updatedCamp = await Camp.findOneAndUpdate(
 );
 
 if (!updatedCamp) {
-  // Camp reached capacity or was closed concurrently
   return res.status(400).render('registrations/new', { ...errorMsg });
 }
 ```
-If saving the registration document fails, a rollback decrement (`$inc: { registrationCount: -1 }`) is automatically executed.
+If saving fails, the count is rolled back with `$inc: { registrationCount: -1 }`.
 
 ### 2. Duplicate Detection
-Active registrations are guarded against duplicates using a compound index on `{ campId: 1, email: 1, registrationStatus: 1 }` and `{ campId: 1, contactNumber: 1, registrationStatus: 1 }`. Duplicate attempts return HTTP 409 with the existing registration reference.
+Active registrations use compound indexes on `{ campId: 1, email: 1, registrationStatus: 1 }` and `{ campId: 1, contactNumber: 1, registrationStatus: 1 }`. Duplicate attempts return HTTP 409.
 
-### 3. Safe Deletion & Data Consistency
-When an administrator deletes a camp that already has active participant registrations, the system automatically marks it as `isArchived = true` and `status = 'Cancelled'` instead of hard-deleting, preserving patient records.
+### 3. Safe Deletion
+When deleting a camp with active registrations, the system sets `isArchived = true` and `status = 'Cancelled'` to retain patient records.
 
-### 4. Cancellation & Capacity Release
-When an administrator cancels a confirmed registration, the system atomically decrements `registrationCount` on the associated Camp, releasing the seat for other community members.
+### 4. Cancellation and Capacity Release
+Cancelling a registration decrements `registrationCount` on the associated Camp document.
 
 ### 5. Administrative Authentication
-- Passwords hashed using `bcryptjs` with salt rounds.
-- Session stored in MongoDB via `connect-mongo`.
-- Cookies configured with `httpOnly: true`, `sameSite: 'lax'`, and dynamic `secure` flags.
-- Route protection middleware (`ensureAuthenticated`) guards all `/admin/*` operations.
+- Passwords hashed with bcryptjs.
+- Sessions stored in MongoDB via connect-mongo.
+- Cookies configured with `httpOnly: true` and `sameSite: 'lax'`.
+- `ensureAuthenticated` middleware guards admin routes.
 
 ---
 
-## 📋 Sysslan IT Solutions 20-Point Verification Checklist
+## Verification Checklist
 
 | # | Scenario | Status | Verification Method |
 |---|---|:---:|---|
-| 1 | Homepage loads successfully | ✅ | Verified (`GET /` returns 200) |
-| 2 | Navigation links work correctly | ✅ | Active highlighting on all pages |
-| 3 | Camp listings display database records | ✅ | Verified (`GET /camps` displays seeded records) |
-| 4 | Camp details load for valid camp IDs | ✅ | Verified (`GET /camps/:id` returns 200) |
-| 5 | Invalid camp IDs return an appropriate response | ✅ | Verified (Invalid ObjectId returns 404) |
-| 6 | Search and filters work correctly | ✅ | Tested by keyword, specialty, city, status, and sort |
-| 7 | Valid registrations are saved successfully | ✅ | Verified (DB record created, capacity updated) |
-| 8 | Invalid form submissions are rejected | ✅ | Verified (Client & server express-validator rules) |
-| 9 | Duplicate registrations are handled correctly | ✅ | Verified (Same email/phone returns 409 conflict) |
-| 10 | Full camps cannot accept additional registrations | ✅ | Verified (Rejected with 'Camp Full' alert) |
-| 11 | Closed camps cannot accept registrations | ✅ | Verified (Rejected with 'Registration Closed') |
-| 12 | Registration references are generated correctly | ✅ | Verified (`MCR-YYYY-XXXXXX` format) |
-| 13 | Admin login works with valid credentials | ✅ | Verified (Issues session cookie and redirects) |
-| 14 | Invalid login attempts are rejected | ✅ | Verified (Returns 401 with error message) |
-| 15 | Unauthorized users cannot access admin routes | ✅ | Verified (Redirects unauthenticated users to `/admin/login`) |
-| 16 | Camp CRUD operations work correctly | ✅ | Create, Read, Update, Delete/Archive fully tested |
-| 17 | Registration management works correctly | ✅ | Attended status toggle and search/filtering |
-| 18 | Capacity is updated correctly after cancellation | ✅ | Verified (Camp capacity released upon cancellation) |
-| 19 | Database errors are handled gracefully | ✅ | Centralized error handler renders clean error view |
-| 20 | Responsive on desktop, tablet, and mobile | ✅ | Bootstrap 5 fluid grid and custom media queries |
+| 1 | Homepage loads successfully | Passed | GET / returns 200 |
+| 2 | Navigation links work correctly | Passed | Active route highlighting verified |
+| 3 | Camp listings display records | Passed | GET /camps displays records |
+| 4 | Camp details load for valid IDs | Passed | GET /camps/:id returns 200 |
+| 5 | Invalid camp IDs return 404 | Passed | Invalid ObjectId returns 404 |
+| 6 | Search and filters work correctly | Passed | Verified by keyword, specialty, city, status, sort |
+| 7 | Valid registrations are saved | Passed | Record created and capacity updated |
+| 8 | Invalid form submissions rejected | Passed | Server and client validation rules |
+| 9 | Duplicate registrations prevented | Passed | Matching email/phone returns 409 |
+| 10 | Full camps reject registrations | Passed | Returns capacity error |
+| 11 | Closed camps reject registrations | Passed | Returns closed registration message |
+| 12 | Registration references generated | Passed | MCR-YYYY-XXXXXX format verified |
+| 13 | Admin login works | Passed | Valid credentials issue session cookie |
+| 14 | Invalid login attempts rejected | Passed | Returns 401 |
+| 15 | Unauthorized admin access blocked | Passed | Redirects to /admin/login |
+| 16 | Camp CRUD operations work | Passed | Create, Read, Update, Delete/Archive verified |
+| 17 | Registration management works | Passed | Status toggle and search verified |
+| 18 | Capacity released on cancellation | Passed | registrationCount decremented |
+| 19 | Database errors handled gracefully | Passed | Central error handler renders error view |
+| 20 | Responsive interface | Passed | Bootstrap 5 grid layout |
 
 ---
 
-## 🌐 Production Deployment Guide
+## Production Deployment Guide
 
-### Deploying to Render / Railway / Heroku:
+### Deploying to Render, Railway, or Heroku
+
 1. Push code to your GitHub repository:
    ```bash
    git init
    git add .
    git commit -m "Initial commit: Medical Camp Registration Portal"
    ```
-2. Provision a free **MongoDB Atlas** cluster and obtain your connection string:
+
+2. Create a MongoDB Atlas cluster and get the connection string:
    ```
    mongodb+srv://<username>:<password>@cluster0.mongodb.net/medical_camp_portal?retryWrites=true&w=majority
    ```
+
 3. Set Environment Variables in your hosting dashboard:
-   - `NODE_ENV=production`
-   - `PORT=3000`
-   - `MONGODB_URI=<your-atlas-connection-string>`
-   - `SESSION_SECRET=<generate-a-strong-random-64-char-string>`
-   - `ADMIN_DEFAULT_EMAIL=admin@yourhospital.org`
-   - `ADMIN_DEFAULT_PASSWORD=YourStrongPasswordHere`
-4. Set Build & Start Commands:
+   - `NODE_ENV`: `production`
+   - `PORT`: `3000` (or leave default for cloud platforms)
+   - `MONGODB_URI`: `<your-atlas-connection-string>`
+   - `SESSION_SECRET`: `<secure-random-string>`
+   - `ADMIN_DEFAULT_EMAIL`: `admin@yourhospital.org`
+   - `ADMIN_DEFAULT_PASSWORD`: `<your-strong-password>`
+
+4. Configure Build and Start Commands:
    - **Build Command:** `npm install`
    - **Start Command:** `node scripts/createAdmin.js && node scripts/seedCamps.js && node app.js`
 
 ---
 
-## 📄 License & Attribution
+## License & Attribution
 
-Developed as a Software Development Project for **Sysslan IT Solutions**.  
-All sample hospitals, doctors, and patient registrations are **fictional demonstration data** for educational and portfolio demonstration.
+All sample hospitals, doctors, and patient registrations are demonstration data.
